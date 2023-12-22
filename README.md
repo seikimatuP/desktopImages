@@ -1,28 +1,73 @@
 # desktopImages_デスクトップ用画像保存リポジトリ
 
-## 追加リスト
+## list
+- yuzuha_hongo
+- aika_sawaguchi
+- aiko_kojima
+- akira_neo
+- asa_kamiya
+- ayane_suzuki
+- ayuka_nakamura
+- azusa_onodera
+- erika_ikuta
+- hana_oba
+- haruka_kaki
+- haruyo_yamaguchi
+- hayato_sakamoto
+- himeka_arano
+- hono_tamura
+- ikaring
+- iori_noguchi
+- kanon_ishikawa
+- kira_masumoto
+- kotaro_kurebayashi
+- maika_sasaki
+- mako_sakashita
+- manak_shida
+- maya_nishina
+- mayu_tamura
+- mayuki_ito
+- mia_nanasawa
+- mikana_yamamoto
+- miru_shiroma
+- misaki_sakata
+- misaki_shiozawa
+- miyu_wada
+- mizuho_habu
+- momo_sakura
+- nagi_inoue
+- nana_okada
+- nanaka_tomita
+- neru_nagahama
+- other
+- rei_jonishi
+- rei_ozono
+- rei_seimiya
+- reina_seji
+- remu_suzumori
+- rena_moriya
+- rin_okabe
+- sae_okazaki
+- saori_endo
+- sara_minami
+- saya_kanagawa
+- sayaka_nitori
+- sera_yukino
+- sumire_yokono
+- suzuka_tomita
+- ten_yamasaki
+- teresa_ikeda
+- tomu_muto
+- umi_shinonome
+- umi_yatsugake
+- wakana_sumino
+- yoko_shogenji
+- yoshino_titose
+- yoshinobu_yamamoto
+- yui_kobayashi
+- yuka_sugai
+- yuki_kiyose
+- yume_hayashi
+- yumiko_seki
+- yurika_kubo
 
-沢口愛華  
-小島愛子  
-生田絵梨花  
-賀喜遥香  
-野口衣織  
-佐々木舞香  
-志田愛佳  
-仁科茉彩  
-白間美瑠  
-岡田奈々  
-冨田菜々風  
-上西玲  
-金川沙耶  
-岡部麟  
-世良ゆきの  
-横野すみれ  
-富田鈴花  
-山本由伸  
-関有美子  
-久保ユリカ  
-石川花音  
-菅井友香  
-山﨑天  
-神谷明采  
