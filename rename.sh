@@ -2,6 +2,8 @@
 
 # スクリプトが置かれているディレクトリ
 base_dir="$(dirname "$0")"
+log_file="$base_dir/rename_log.txt"
+echo "--- Rename Log $(date) ---" > "$log_file"
 
 # ディレクトリをループ処理
 target_dirs=("$base_dir"/*)
@@ -15,6 +17,7 @@ for dir in "${target_dirs[@]}"; do
             if [[ -f "$file" ]]; then
                 ext="${file##*.}"
                 new_name="${dir_name}_${count}.${ext}"
+                echo "Renaming: $file -> $dir/$new_name" | tee -a "$log_file"
                 mv "$file" "$dir/$new_name"
                 ((count++))
             fi
