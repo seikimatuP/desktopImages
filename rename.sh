@@ -1,9 +1,13 @@
 #!/bin/bash
 
+# 設定ファイルを読み込む
+config_file="$(dirname "$0")/rename_config.conf"
+source "$config_file"
+
 # スクリプトが置かれているディレクトリ
 base_dir="$(dirname "$0")"
-log_file="$base_dir/rename_log.txt"
-exclude_file="$base_dir/.exclude_dirs"
+log_file="$base_dir/$log_file_name"
+exclude_file="$base_dir/$exclude_file_name"
 echo "--- Rename Log $(date) ---" > "$log_file"
 
 # 除外ディレクトリをリスト化
