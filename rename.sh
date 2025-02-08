@@ -25,6 +25,13 @@ if [[ ${#exclude_dirs[@]} -eq 0 ]]; then
     fi
 fi
 
+# スクリプトの実行確認
+read -p "Proceed with renaming files in directories? (yes/no): " confirm
+if [[ ! "$confirm" =~ ^[Yy]([Ee][Ss])?$ ]]; then
+    echo "Operation canceled." | tee -a "$log_file"
+    exit 0
+fi
+
 # ディレクトリをループ処理
 target_dirs=("$base_dir"/*)
 for dir in "${target_dirs[@]}"; do
@@ -44,7 +51,11 @@ for dir in "${target_dirs[@]}"; do
                 ext="${file##*.}"
                 new_name="${dir_name}_${count}.${ext}"
                 echo "Renaming: $file -> $dir/$new_name" | tee -a "$log_file"
-                mv "$file" "$dir/$new_name"
+                if mv "$file" "$dir/$new_name"; then
+                    echo "Successfully renamed: $file -> $dir/$new_name" | tee -a "$log_file"
+                else
+                    echo "Error renaming: $file" | tee -a "$log_file"
+                fi
                 ((count++))
             fi
         done
