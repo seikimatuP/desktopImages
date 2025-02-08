@@ -10,8 +10,19 @@ echo "--- Rename Log $(date) ---" > "$log_file"
 exclude_dirs=()
 if [[ -f "$exclude_file" ]]; then
     while IFS= read -r line; do
+        # コメント行と空行を無視
+        [[ -z "$line" || "$line" =~ ^#.*$ ]] && continue
         exclude_dirs+=("$line")
     done < "$exclude_file"
+fi
+
+# 除外ディレクトリがない場合は確認
+if [[ ${#exclude_dirs[@]} -eq 0 ]]; then
+    read -p "No excluded directories found. Proceed with renaming? (yes/no): " confirm
+    if [[ ! "$confirm" =~ ^[Yy]([Ee][Ss])?$ ]]; then
+        echo "Operation canceled." | tee -a "$log_file"
+        exit 0
+    fi
 fi
 
 # ディレクトリをループ処理
