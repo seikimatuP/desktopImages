@@ -49,19 +49,37 @@ for dir in "${target_dirs[@]}"; do
         fi
         
         count=1
-        # ディレクトリ内のファイルをループ処理
-        for file in "$dir"/*; do
-            if [[ -f "$file" ]]; then
+        # ディレクトリ内のファイルをソートしてループ処理
+        for file in $(ls "$dir" | sort); do
+            file_path="$dir/$file"
+            if [[ -f "$file_path" ]]; then
                 ext="${file##*.}"
-                new_name="${dir_name}_${count}.${ext}"
-                echo "Renaming: $file -> $dir/$new_name" | tee -a "$log_file"
-                if mv "$file" "$dir/$new_name"; then
-                    echo "Successfully renamed: $file -> $dir/$new_name" | tee -a "$log_file"
+                base_name="${dir_name}_${count}"
+                new_name="${base_name}.${ext}"
+                
+                # ファイル名が重複しないようにチェック（拡張子を抜きで）
+                flg=false
+                while ls "$dir/${base_name}."* 1> /dev/null 2>&1; do
+                    ((count++))
+                    base_name="${dir_name}_${count}"
+                    new_name="${base_name}.${ext}"
+                    flg=true
+                done
+                                
+                echo "Renaming: $file_path -> $dir/$new_name" | tee -a "$log_file"
+                if mv "$file_path" "$dir/$new_name"; then
+                    echo "Successfully renamed: $file_path -> $dir/$new_name" | tee -a "$log_file"
                 else
-                    echo "Error renaming: $file" | tee -a "$log_file"
+                    echo "Error renaming: $file_path" | tee -a "$log_file"
+                fi
+
+                if $flg; then
+                    echo "Skipping file due to name conflict: $file_path" | tee -a "$log_file"
+                    break
                 fi
                 ((count++))
             fi
         done
+        echo "end file loop"
     fi
 done
