@@ -44,13 +44,12 @@ for dir in "${target_dirs[@]}"; do
         
         # 除外リストに含まれている場合はスキップ
         if [[ " ${exclude_dirs[*]} " =~ " $dir_name " ]]; then
-            echo "Skipping excluded directory: $dir_name" | tee -a "$log_file"
             continue
         fi
         
         count=1
         # ディレクトリ内のファイルをソートしてループ処理
-        for file in $(ls "$dir" | sort); do
+        for file in $(ls "$dir" | sort -V); do
             file_path="$dir/$file"
             if [[ -f "$file_path" ]]; then
                 ext="${file##*.}"
@@ -60,22 +59,26 @@ for dir in "${target_dirs[@]}"; do
                 # ファイル名が重複しないようにチェック（拡張子を抜きで）
                 flg=false
                 while ls "$dir/${base_name}."* 1> /dev/null 2>&1; do
+                    # ファイル名が重複している場合、重複フラグをオンにしてループを抜ける
                     ((count++))
-                    base_name="${dir_name}_${count}"
-                    new_name="${base_name}.${ext}"
+
                     flg=true
+                    break
                 done
+
+                if $flg; then
+                    # 重複している場合はスキップ
+                    echo "Skipping file due to name conflict: $file_path" | tee -a "$log_file"
+                    count=1
+
+                    continue
+                fi
                                 
                 echo "Renaming: $file_path -> $dir/$new_name" | tee -a "$log_file"
                 if mv "$file_path" "$dir/$new_name"; then
                     echo "Successfully renamed: $file_path -> $dir/$new_name" | tee -a "$log_file"
                 else
                     echo "Error renaming: $file_path" | tee -a "$log_file"
-                fi
-
-                if $flg; then
-                    echo "Skipping file due to name conflict: $file_path" | tee -a "$log_file"
-                    break
                 fi
                 ((count++))
             fi
