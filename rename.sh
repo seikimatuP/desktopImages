@@ -30,11 +30,11 @@ if [[ ${#exclude_dirs[@]} -eq 0 ]]; then
 fi
 
 # スクリプトの実行確認
-read -p "Proceed with renaming files in directories? (yes/no): " confirm
-if [[ ! "$confirm" =~ ^[Yy]([Ee][Ss])?$ ]]; then
-    echo "Operation canceled." | tee -a "$log_file"
-    exit 0
-fi
+# read -p "Proceed with renaming files in directories? (yes/no): " confirm
+# if [[ ! "$confirm" =~ ^[Yy]([Ee][Ss])?$ ]]; then
+#     echo "Operation canceled." | tee -a "$log_file"
+#     exit 0
+# fi
 
 # ディレクトリをループ処理
 target_dirs=("$base_dir"/*)
@@ -48,22 +48,26 @@ for dir in "${target_dirs[@]}"; do
         fi
         
         count=1
+        flg=false
         # ディレクトリ内のファイルをソートしてループ処理
         for file in $(ls "$dir" | sort -V); do
             file_path="$dir/$file"
             if [[ -f "$file_path" ]]; then
+
                 ext="${file##*.}"
                 base_name="${dir_name}_${count}"
                 new_name="${base_name}.${ext}"
                 
                 # ファイル名が重複しないようにチェック（拡張子を抜きで）
-                flg=false
                 while ls "$dir/${base_name}."* 1> /dev/null 2>&1; do
                     # ファイル名が重複している場合、重複フラグをオンにしてループを抜ける
+                    if [[ "$file" == "${base_name}.${ext}" ]]; then
+                        echo hoge
+                        flg=true
+                        break
+                    fi
                     ((count++))
-
-                    flg=true
-                    break
+                    base_name="${dir_name}_${count}"
                 done
 
                 if $flg; then
@@ -73,14 +77,16 @@ for dir in "${target_dirs[@]}"; do
 
                     continue
                 fi
-                                
+
+                new_name="${base_name}.${ext}"
                 echo "Renaming: $file_path -> $dir/$new_name" | tee -a "$log_file"
                 if mv "$file_path" "$dir/$new_name"; then
                     echo "Successfully renamed: $file_path -> $dir/$new_name" | tee -a "$log_file"
                 else
                     echo "Error renaming: $file_path" | tee -a "$log_file"
                 fi
-                ((count++))
+                flg=false
+                count=1
             fi
         done
         echo "end file loop"
