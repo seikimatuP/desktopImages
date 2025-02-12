@@ -62,7 +62,6 @@ for dir in "${target_dirs[@]}"; do
                 while ls "$dir/${base_name}."* 1> /dev/null 2>&1; do
                     # ファイル名が重複している場合、重複フラグをオンにしてループを抜ける
                     if [[ "$file" == "${base_name}.${ext}" ]]; then
-                        echo hoge
                         flg=true
                         break
                     fi
@@ -74,7 +73,8 @@ for dir in "${target_dirs[@]}"; do
                     # 重複している場合はスキップ
                     echo "Skipping file due to name conflict: $file_path" | tee -a "$log_file"
                     count=1
-
+                    flg=false
+                    
                     continue
                 fi
 
@@ -85,7 +85,6 @@ for dir in "${target_dirs[@]}"; do
                 else
                     echo "Error renaming: $file_path" | tee -a "$log_file"
                 fi
-                flg=false
                 count=1
             fi
         done
